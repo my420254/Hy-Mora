@@ -1,5 +1,5 @@
 
-````markdown
+
 # Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -37,7 +37,7 @@ Clone this repository and install the required packages:
 git clone [https://github.com/YourUsername/Hy-Mora.git](https://github.com/YourUsername/Hy-Mora.git)
 cd Hy-Mora
 pip install -r requirements.txt
-````
+
 
 ### 2\. Reproducing Main Results (Fine-tuning)
 
@@ -91,5 +91,6 @@ If you find this code or our paper useful for your research, please cite:
 This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
 ```
+
 
 
