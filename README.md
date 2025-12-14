@@ -1,8 +1,3 @@
-这是为您定制的专业 `README.md` 内容。它结构清晰、信息完整，完全符合顶级会议论文代码库的标准。
-
-您只需将以下内容复制到 `README.md` 文件中即可。
-
------
 
 ````markdown
 # Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis
@@ -96,4 +91,5 @@ If you find this code or our paper useful for your research, please cite:
 This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
 ```
+
 
