@@ -32,7 +32,6 @@ The code is organized to be self-contained and easy to reproduce.
 
 Clone this repository and install the required packages:
 
-```bash
 git clone [https://github.com/YourUsername/Hy-Mora.git](https://github.com/YourUsername/Hy-Mora.git)
 cd Hy-Mora
 pip install -r requirements.txt
@@ -52,9 +51,9 @@ Each notebook contains the full pipeline: Data Loading -\> Model Initialization 
 
 To reproduce the comparison with Large Language Models (Table 3 in the paper), run the python script:
 
-```bash
+
 python exp_llm_comparison.py
-```
+
 
 This script will:
 
@@ -106,4 +105,5 @@ This project is licensed under the MIT License - see the [LICENSE](https://www.g
 
 ```
 ```
+
 
