@@ -1,6 +1,4 @@
-没问题，这是为您准备的最终完整版 `README.md` 内容。您只需点击代码块右上角的 **"Copy"** 按钮，然后粘贴到您的 `README.md` 文件中即可。
 
-````markdown
 # Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -38,7 +36,7 @@ Clone this repository and install the required packages:
 git clone [https://github.com/YourUsername/Hy-Mora.git](https://github.com/YourUsername/Hy-Mora.git)
 cd Hy-Mora
 pip install -r requirements.txt
-````
+
 
 ### 2\. Reproducing Main Results (Fine-tuning)
 
@@ -108,3 +106,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://www.g
 
 ```
 ```
+
