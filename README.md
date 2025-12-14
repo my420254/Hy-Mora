@@ -1,108 +1,146 @@
 
 # Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-[![PEFT](https://img.shields.io/badge/PEFT-State%20of%20the%20Art-green)](https://github.com/huggingface/peft)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.6%2B-ee4c2c.svg)](https://pytorch.org/)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Transformers-blue)](https://huggingface.co/)
+[![PEFT](https://img.shields.io/badge/PEFT-LoRA%2FDoRA-green)](https://github.com/huggingface/peft)
 
-This repository contains the official implementation of the paper **"Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis"**.
+This repository contains the official PyTorch implementation of the paper **"Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis"**.
 
-## 🌟 Overview
+## 📖 Abstract
 
-**Hy-Mora** is a parameter-efficient fine-tuning (PEFT) framework designed to address the "Representation Collapse" problem in long-tailed sentiment analysis tasks. While Large Language Models (LLMs) are powerful, they often exhibit severe majority-class bias in few-shot settings. Hy-Mora solves this via two core mechanisms:
+**Hy-Mora** is a novel Parameter-Efficient Fine-Tuning (PEFT) framework specifically designed to mitigate the "Representation Collapse" problem in long-tailed sentiment analysis. While Low-Rank Adaptation (LoRA) is efficient, it often struggles with minority classes in highly imbalanced scenarios.
 
-1.  **Adaptive Hierarchical State Pooling (AHSP):** Aggregates multi-granular features (Salient, Contextual, Attentive) to mitigate the information bottleneck of the single `[CLS]` token.
-2.  **Tail-aware Prototype Memory Bank (TPMB):** A dynamic, non-parametric memory reservoir that enforces "Margin Expansion" in the feature space, explicitly pushing minority classes away from majority clusters.
+Hy-Mora addresses this via two synergistic mechanisms:
+1.  **Adaptive Hierarchical Smart Pooling (AHSP):** Replaces the standard `[CLS]` token with a dynamic fusion of attentive, contextual, and maximum-salience features, capturing richer semantic signals.
+2.  **Tail-aware Prototype Memory Bank (TPMB):** Incorporates a non-parametric memory module that stores class-specific prototypes. It utilizes a contrastive auxiliary loss to enforce **Margin Expansion** in the feature space, explicitly pushing minority class representations away from majority clusters.
 
 ## 📂 Repository Structure
 
-The code is organized to be self-contained and easy to reproduce.
+The codebase is structured for reproducibility across multiple datasets and settings.
 
-| File | Description |
-| :--- | :--- |
-| `exp_smp2020_comparison.ipynb` | Training & Evaluation on the **SMP2020-EWECT** (Chinese) dataset. Includes Hy-Mora vs. DoRA/LoRA comparisons. |
-| `exp_sst5_comparison.ipynb` | Training & Evaluation on the **SST-5** (English) dataset. |
-| `exp_tweeteval_comparison.ipynb` | Training & Evaluation on the **TweetEval** (English) dataset. |
-| `exp_llm_comparison.py` | Script to run **Zero-Shot & 3-Shot In-Context Learning** benchmarks using **Qwen-2.5-7B** and **Llama-3.1-8B**. |
-| `requirements.txt` | List of dependencies required to run the experiments. |
+```text
+Hy-Mora/
+├── exp_smp2020_comparison.py   # Main Experiment: SMP2020-EWECT (Chinese, 6 classes)
+├── exp_sst5_comparison.py      # Main Experiment: SST-5 (English, 5 classes)
+├── exp_tweeteval_comparison.py # Main Experiment: TweetEval (English, 3 classes)
+├── exp_llm_Qwen_zero-shot.py   # LLM Baseline: Qwen-2.5-7B (Zero-Shot)
+├── exp_llm_Qwen_three-shot.py  # LLM Baseline: Qwen-2.5-7B (3-Shot In-Context Learning)
+├── exp_llm_Llama_zero-shot.py  # LLM Baseline: Llama-3.1-8B (Zero-Shot)
+├── exp_llm_Llama_three-shot.py # LLM Baseline: Llama-3.1-8B (3-Shot In-Context Learning)
+├── requirements.txt            # Python dependencies
+├── LICENSE                     # MIT License
+└── README.md                   # Project documentation
+````
 
-## 🚀 Quick Start
+## 🛠️ Installation
 
-### 1. Installation
+We recommend using a virtual environment (Conda or venv). The code requires PyTorch and Hugging Face libraries.
 
-Clone this repository and install the required packages:
-
+```bash
+# Clone the repository
 git clone [https://github.com/YourUsername/Hy-Mora.git](https://github.com/YourUsername/Hy-Mora.git)
 cd Hy-Mora
+
+# Install dependencies
 pip install -r requirements.txt
 
+**Key Dependencies:**
 
-### 2\. Reproducing Main Results (Fine-tuning)
+  * `torch>=2.6.0`
+  * `transformers>=4.53.3`
+  * `peft>=0.16.0`
+  * `bitsandbytes` (Required for LLM quantization)
 
-To reproduce the main comparative results (Table 2 in the paper) for each dataset, simply run the corresponding Jupyter Notebook:
+## 🚀 Usage & Reproduction
 
-  * **SMP2020:** Open and run `exp_smp2020_comparison.ipynb`
-  * **SST-5:** Open and run `exp_sst5_comparison.ipynb`
-  * **TweetEval:** Open and run `exp_tweeteval_comparison.ipynb`
+### 1\. Main Fine-Tuning Experiments (Hy-Mora vs. Baselines)
 
-Each notebook contains the full pipeline: Data Loading -\> Model Initialization (Hy-Mora) -\> Training -\> Evaluation -\> Visualization.
+These scripts replicate the comprehensive benchmark comparison (Table 2 in the paper). They automatically run:
 
-### 3\. Reproducing LLM Baselines
+  * **Methods:** Full Fine-tuning, LoRA (Vanilla/Balanced), LoRA+Focal, LoRA+LDAM, DoRA, and **Hy-Mora (Ours)**.
+  * **Ablation Studies:** Testing components without Memory Bank or without Smart Pooling.
+  * **Sensitivity Analysis:** Experiments on Temperature and Loss Weights (saved to separate CSVs).
 
-To reproduce the comparison with Large Language Models (Table 3 in the paper), run the python script:
+Run the script corresponding to the dataset you wish to evaluate:
 
+```bash
+# Run experiments on SMP2020 (Chinese)
+python exp_smp2020_comparison.py
 
-python exp_llm_comparison.py
+# Run experiments on SST-5 (English)
+python exp_sst5_comparison.py
 
+# Run experiments on TweetEval (English)
+python exp_tweeteval_comparison.py
+```
 
-This script will:
+**Output:**
 
-1.  Load Qwen-2.5-7B and Llama-3.1-8B (via `unsloth` for efficiency).
-2.  Perform evaluation on strict validation sets under both **Zero-Shot** and **3-Shot** settings.
-3.  Save the results to `exp_llm_comparison_results.csv`.
+  * Results are saved to CSV files (e.g., `smp2020_results_IPM.csv`).
+  * A markdown summary report (e.g., `*_Summary.md`) is automatically generated after execution.
+  * Visualization data (.npz) and bad-case analysis (.csv) are saved in the `viz_data_*` directories.
+
+### 2\. Large Language Model (LLM) Baselines
+
+To compare the performance of Hy-Mora against SOTA LLMs using In-Context Learning (Zero-Shot & Few-Shot), run the following scripts. These scripts use 4-bit quantization via `bitsandbytes` for memory efficiency.
+
+**Qwen-2.5-7B-Instruct:**
+
+```bash
+python exp_llm_Qwen_zero-shot.py   # Zero-Shot
+python exp_llm_Qwen_three-shot.py  # 3-Shot
+```
+
+**Llama-3.1-8B-Instruct:**
+
+```bash
+python exp_llm_Llama_zero-shot.py  # Zero-Shot
+python exp_llm_Llama_three-shot.py # 3-Shot
+```
 
 ## 📊 Datasets
 
-This repository relies on public benchmarks available via the [Hugging Face Datasets](https://huggingface.co/docs/datasets/index) library.
+The scripts automatically download and cache datasets via the Hugging Face `datasets` library.
 
-**You do NOT need to manually download these files.** The provided scripts will automatically download, cache, and process the data upon the first run.
+| Dataset | Language | Classes | Imbalance Info | Base Model |
+| :--- | :--- | :--- | :--- | :--- |
+| **SMP2020-EWECT** | Chinese | 6 | Tail Classes: `Fear(1)`, `Surprise(5)` | `hfl/chinese-macbert-base` |
+| **SST-5** | English | 5 | Tail Classes: `Very Negative(0)`, `Negative(1)` | `roberta-base` |
+| **TweetEval** | English | 3 | Tail Classes: `Negative(0)`, `Positive(2)` | `roberta-base` |
 
-### Data Sources
+## 📝 Methodology Summary
 
-We use the following official repositories as our data sources:
+The `UnifiedModel` class in our code implements the following architecture:
 
-| Dataset | Hugging Face ID | Description |
-| :--- | :--- | :--- |
-| **SMP2020-EWECT** | `Um1neko/smp2020` | Chinese Social Media Emotion Classification (6 classes). |
-| **SST-5** | `SetFit/sst5` | Stanford Sentiment Treebank, fine-grained (5 classes). |
-| **TweetEval** | `tweet_eval` (sentiment) | Twitter Sentiment Analysis (3 classes). |
+1.  **Encoder:** Uses a pre-trained Transformer (RoBERTa/MacBERT) with LoRA/DoRA adapters injected into Query/Key/Value projections.
+2.  **Hierarchical Smart Pooling (HSP):**
+      * Extracts `hidden_states` from the last layer.
+      * Computes an attention-weighted sum (Attentive).
+      * Computes a global mean (Contextual).
+      * Computes global max-pooling (Salient).
+      * Fuses these views using a learnable gating mechanism.
+3.  **Memory Bank:**
+      * Maintains a queue of prototype feature vectors for each class.
+      * During training, computes a similarity-based contrastive loss to ensure minority class samples maintain distance from majority prototypes.
 
-### Data Pre-processing & Splitting
-
-To reproduce the **Class-Imbalanced** settings described in the paper ("Config A" and "Config B"), our scripts apply **Stratified Sampling** on the fly:
-
-  * **Training Sets:** We construct long-tailed distributions by down-sampling specific classes to match the imbalance ratios (e.g., 20:1, 30:1) detailed in **Table 1** of the paper.
-  * **Validation Sets:** We use strictly balanced validation sets (80-100 samples per class) to ensure unbiased evaluation metrics.
-
-*Note: See the `get_validation_set` and data loading functions in the notebooks for the exact splitting logic.*
-
-## 📝 Citation
+## 📜 Citation
 
 If you find this code or our paper useful for your research, please cite:
 
 ```bibtex
 @article{Zhang2025HyMora,
   title={Hy-Mora: Hybrid Pooling and Memory-Augmented LoRA for Class-Imbalanced Sentiment Analysis},
-  author={Zhang, Mengyang and [Co-author Name] and [Co-author Name]},
+  author={Zhang, Mengyang},
   journal={arXiv preprint},
   year={2025}
 }
 ```
 
-## 📜 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
-
-
+Copyright (c) 2025 Mengyang Zhang.
 
