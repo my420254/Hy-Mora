@@ -38,7 +38,7 @@ Hy-Mora/
 
 We recommend using a virtual environment (Conda or venv). The code requires PyTorch and Hugging Face libraries.
 
-```bash
+
 # Clone the repository
 git clone [https://github.com/YourUsername/Hy-Mora.git](https://github.com/YourUsername/Hy-Mora.git)
 cd Hy-Mora
@@ -143,4 +143,5 @@ If you find this code or our paper useful for your research, please cite:
 This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
 Copyright (c) 2025 Mengyang Zhang.
+
 
